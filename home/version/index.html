@@ -1,1 +1,22 @@
-
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // Immediately download the version file
+        fetch('https://raw.githubusercontent.com/voidparadox9303/voidparadox9303.github.io/main/home/version')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'version';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                setTimeout(() => window.close(), 100);
+            });
+    </script>
+</head>
+<body></body>
+</html>
