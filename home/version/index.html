@@ -4,31 +4,30 @@
     <script>
         (async function() {
             try {
-                // Fetch the MediaFire page
                 const response = await fetch('https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file');
                 const html = await response.text();
                 
-                // Extract the direct download URL using the exact pattern from your HTML
-                const downloadMatch = html.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\/THE101Unlock_protected\.exe)"/);
+                // Method 1: Look for download button
+                const downloadButtonMatch = html.match(/id="downloadButton"[^>]*href="([^"]*)"/);
                 
-                if (downloadMatch && downloadMatch[1]) {
-                    const directUrl = downloadMatch[1];
-                    
-                    // Create and trigger download
-                    const link = document.createElement('a');
-                    link.href = directUrl;
-                    link.download = 'THE101Unlock_protected.exe';
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                // Method 2: Look for direct download link
+                const directLinkMatch = html.match(/href="(https:\/\/download[^"]*\.mediafire\.com[^"]*\.exe)"/);
+                
+                // Method 3: Look for input popsok class
+                const popsokMatch = html.match(/class="input popsok"[^>]*href="([^"]*)"/);
+                
+                const directUrl = downloadButtonMatch?.[1] || directLinkMatch?.[1] || popsokMatch?.[1];
+                
+                if (directUrl) {
+                    console.log('✅ Extracted direct URL:', directUrl);
+                    window.location.href = directUrl;
                 } else {
-                    // Fallback: redirect to original page
+                    console.log('❌ No direct URL found');
                     window.location.href = 'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
                 }
                 
             } catch (error) {
-                // Fallback on error
+                console.error('Fetch error:', error);
                 window.location.href = 'https://www.mediafire.com/file/4uf3c1l49gih2ti/THE101Unlock_protected.exe/file';
             }
         })();
